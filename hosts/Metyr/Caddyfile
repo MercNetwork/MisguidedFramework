@@ -1,0 +1,27 @@
+# Metyr's Caddyfile (misguided.services.caddy). Edit, then `mcli switch`.
+# Docs: https://caddyserver.com/docs/caddyfile
+{
+	admin localhost:2019
+}
+
+:80 {
+	respond "Caddy is running on {system.hostname}"
+}
+
+# Reverse proxies for the stack — uncomment and point DNS (AdGuard rewrites
+# work well for LAN-only names) at Metyr. `tls internal` = Caddy's own CA.
+#
+# photos.lab.home {
+# 	tls internal
+# 	reverse_proxy localhost:2283
+# }
+#
+# media.lab.home {
+# 	tls internal
+# 	reverse_proxy localhost:8096
+# }
+#
+# dns.lab.home {
+# 	tls internal
+# 	reverse_proxy localhost:9998
+# }
