@@ -30,6 +30,10 @@
     # Raspberry Pi 5 kernel, firmware and bootloader (Malenia).
     # Deliberately NOT following our nixpkgs so the Pi kernel comes from their cache.
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+
+    # Sidra — Apple Music desktop client (Romina, Midra). Not in nixpkgs.
+    # Left on its own nixpkgs: it builds on CastLabs Electron (Widevine DRM).
+    sidra.url = "github:wimpysworld/sidra";
   };
 
   outputs = {

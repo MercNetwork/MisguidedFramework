@@ -1,7 +1,11 @@
 # The shared graphical desktop (Romina, Midra): GNOME + GDM, audio, printing,
 # fonts and the everyday GUI apps. GNOME's own app list lives in
 # modules/nixos/gnome.nix — that's where you exclude what you don't use.
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [./base.nix];
 
   misguided.desktop.gnome.enable = true;
@@ -50,6 +54,7 @@
     unrar
     discord
     fragments # torrents — Preferences → connect to Metyr's Transmission (port 9091)
+    inputs.sidra.packages.${pkgs.stdenv.hostPlatform.system}.default # Apple Music
     # ISO -> USB: GNOME Disks → ⋮ → Restore Disk Image (or right-click the .iso in Files)
   ];
 
