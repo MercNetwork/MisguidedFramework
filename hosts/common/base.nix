@@ -30,6 +30,9 @@ in {
 
   # --- Network / locale / time ---
   networking.networkmanager.enable = lib.mkDefault true;
+
+  # Every machine joins the tailnet (phone access, remote desktop, mcli push).
+  misguided.services.tailscale.enable = true;
   time.timeZone = lib.mkDefault "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = lib.genAttrs [

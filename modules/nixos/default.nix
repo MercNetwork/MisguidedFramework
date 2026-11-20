@@ -5,14 +5,15 @@
     ./disko.nix
     ./gnome.nix
     ./gaming.nix
+    ./remote-desktop.nix
     ./sops.nix
+    ./tailscale.nix
 
     ./server/adguard.nix
     ./server/caddy.nix
     ./server/cloudflared.nix
     ./server/ssh.nix
     ./server/syncthing.nix
-    ./server/tailscale.nix
     ./server/transmission.nix
     ./server/wireguard.nix
 

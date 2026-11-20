@@ -1,13 +1,10 @@
-# Headless machines (Metyr, Malenia): SSH with keys only, Tailscale, nftables
-# firewall and sops-nix for secrets. No desktop, no GUI apps.
+# Headless machines (Metyr, Malenia): SSH with keys only, nftables firewall
+# and sops-nix for secrets. No desktop, no GUI apps. (Tailscale is in base.nix.)
 {lib, ...}: {
   imports = [./base.nix];
 
   misguided = {
-    services = {
-      ssh.enable = true;
-      tailscale.enable = true;
-    };
+    services.ssh.enable = true;
     security.sops.enable = true;
 
     # REQUIRED before the first deploy — SSH is key-only, so without a key you

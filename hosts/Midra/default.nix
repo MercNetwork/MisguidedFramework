@@ -11,4 +11,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   misguided.gaming.enable = true;
+
+  # RDP over Tailscale (setup: modules/nixos/remote-desktop.nix)
+  misguided.desktop.remoteDesktop.enable = true;
 }

@@ -10,6 +10,8 @@
   misguided = {
     darwin = {
       defaults.enable = true;
+      tailscale.enable = true;
+      screenSharing.enable = true; # VNC over Tailscale: rellana:5900
       homebrew = {
         enable = false; # needs Homebrew installed first (https://brew.sh)
         casks = [

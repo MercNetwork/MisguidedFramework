@@ -33,19 +33,21 @@ hosts/
   common/base.nix         every NixOS host: boot, nix, locale, Home Manager
   common/user.nix         the mercury user (misguided.user.*)
   common/desktop.nix      vanilla GNOME desktops: audio, fonts, Firefox, Discord, Fragments
-  common/server.nix       headless: SSH (keys only), Tailscale, nftables, sops
+  common/server.nix       headless: SSH (keys only), nftables, sops
   Romina/ Midra/ Metyr/   default.nix + disko.nix + hardware-configuration.nix (+ GPU file)
   Malenia/                Pi 5: default.nix + disko.nix (board support from nixos-raspberrypi)
   Rellana/                nix-darwin
 modules/
   nixos/gnome.nix         GNOME + GDM — the full app list to exclude from is here
+  nixos/remote-desktop.nix  GNOME Remote Login (RDP) for Midra and Romina
+  nixos/tailscale.nix     Tailscale, on every NixOS machine
   nixos/gaming.nix        Steam, ProtonPlus, GameMode
-  nixos/server/           ssh, tailscale, caddy, adguard, cloudflared, syncthing, transmission, wireguard
+  nixos/server/           ssh, caddy, adguard, cloudflared, syncthing, transmission, wireguard
   nixos/oci/              immich, jellyfin, pgadmin (containers)
   nixos/virtualisation/   podman, docker, oci, compose2nix, microvm
   nixos/sops.nix          sops-nix
   home/                   shell, cli, git, langs, zed, flutter, devtools, desktop
-  darwin/                 Rellana's base, macOS defaults, Homebrew
+  darwin/                 Rellana's base, macOS defaults, Homebrew, Tailscale + Screen Sharing
 ```
 
 Per-host Home Manager additions go in the host file:
@@ -83,6 +85,26 @@ any NixOS ISO with SSH enabled.
 
 **Rellana**: install Nix, clone to `~/MisguidedFramework`, then
 `sudo nix run nix-darwin -- switch --flake ~/MisguidedFramework#Rellana`.
+
+## Remote access
+
+Every machine is on Tailscale (`sudo tailscale up` once per machine). On the
+tailnet, your iPhone included, every port is reachable. Nothing extra is
+opened on the LAN.
+
+| From the iPhone | App | Address |
+|---|---|---|
+| Midra, Romina desktop | Windows App (RDP) | `midra`, `romina` |
+| Rellana desktop | a VNC client (Screens, RealVNC Viewer) | `rellana:5900` |
+| Metyr services | Safari / Immich / Jellyfin apps | `metyr:2283`, `metyr:8096`, … |
+| Any shell | an SSH client (Termius, Blink) | `mercury@metyr` |
+
+Remote Desktop needs a one-time RDP login on Midra and Romina:
+
+```bash
+sudo grdctl --system rdp set-credentials <rdp-user> <rdp-password>
+sudo grdctl --system rdp enable
+```
 
 ## First boot
 

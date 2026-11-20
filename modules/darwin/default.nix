@@ -15,6 +15,7 @@ in {
     inputs.home-manager.darwinModules.home-manager
     ./defaults.nix
     ./homebrew.nix
+    ./remote.nix
   ];
 
   options.misguided.user = {

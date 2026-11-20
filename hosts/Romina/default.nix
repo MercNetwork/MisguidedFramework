@@ -18,6 +18,9 @@
   # Intel thermal daemon: keeps Tiger Lake CPUs from throttling hard.
   services.thermald.enable = true;
 
+  # RDP over Tailscale (setup: modules/nixos/remote-desktop.nix)
+  misguided.desktop.remoteDesktop.enable = true;
+
   # Local containers for dev work (also gives `docker` via podman).
   misguided.virtualisation.podman.enable = true;
 
