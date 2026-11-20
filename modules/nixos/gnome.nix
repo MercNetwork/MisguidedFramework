@@ -42,20 +42,20 @@ in {
         # ---- Core apps -----------------------------------------------------
         # baobab                   # Disk Usage Analyzer
         # decibels                 # Audio Player
-        # epiphany                 # Web (browser)
-        # geary                    # Mail
+        epiphany # Web (browser)
+        geary # Mail
         # gnome-calculator         # Calculator
         # gnome-calendar           # Calendar
         # gnome-characters         # Characters
         # gnome-clocks             # Clocks
         # gnome-connections        # Connections (RDP / VNC client)
         # gnome-console            # Console (terminal)
-        # gnome-contacts           # Contacts
+        gnome-contacts # Contacts
         # gnome-disk-utility       # Disks (also the ISO -> USB writer: Restore Disk Image)
         # gnome-font-viewer        # Fonts
         # gnome-logs               # Logs
-        # gnome-maps               # Maps
-        # gnome-music              # Music
+        gnome-maps # Maps
+        gnome-music # Music
         # gnome-system-monitor     # System Monitor
         # gnome-text-editor        # Text Editor
         # gnome-weather            # Weather
@@ -65,7 +65,7 @@ in {
         # seahorse                 # Passwords and Keys
         # showtime                 # Video Player
         # simple-scan              # Document Scanner
-        # snapshot                 # Camera
+        snapshot # Camera
         # sushi                    # quick previewer for Files (space bar)
 
         # ---- Core developer tools ------------------------------------------
