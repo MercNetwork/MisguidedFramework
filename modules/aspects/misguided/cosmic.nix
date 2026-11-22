@@ -8,9 +8,9 @@
 # (List mirrors nixpkgs' nixos/modules/services/desktop-managers/cosmic.nix.)
 {
   misguided.cosmic = {
-    # The greeter remembers the last user and session here.
-    persist.directories = [ "/var/lib/cosmic-greeter" ];
-
+    # Not persisted: /var/lib/cosmic-greeter is the greeter user's home, which
+    # NixOS recreates with the right owner on every boot. Persisting it gave it
+    # root ownership and the login screen crashed (cosmic-comp: Permission denied).
     nixos =
       { pkgs, ... }:
       {
