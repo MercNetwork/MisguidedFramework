@@ -2,6 +2,8 @@
 # COSMIC desktop; rebuilt from Romina with `mcli push Midra mercury@midra`.
 { misguided, ... }:
 {
+  den.hosts.x86_64-linux.Midra.settings.misguided.impermanence.wipeRootOnBoot = false; # MIGRATION dry run (guide, Phase B): delete to turn the wipe on
+
   den.hosts.x86_64-linux.Midra.settings.misguided.disk = {
     device = "/dev/nvme0n1"; # check with `lsblk`
     # Still encrypted, but the TPM unlocks it at boot, so Midra can be rebooted

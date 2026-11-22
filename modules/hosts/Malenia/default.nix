@@ -38,6 +38,9 @@
     instantiate = inputs.nixos-raspberrypi.lib.nixosSystem;
     home-manager.module = inputs.home-manager-rpi.nixosModules.home-manager;
 
+    # MIGRATION dry run (guide, Phase B): delete to turn the wipe on.
+    settings.misguided.impermanence.wipeRootOnBoot = false;
+
     settings.misguided.disk = {
       device = "/dev/nvme0n1";
       boot = "rpi";

@@ -23,6 +23,10 @@
       };
     };
 
+    # MIGRATION: dry run — /persist bind mounts on, nothing wiped. Copy state
+    # first (guide, Phase B), then delete this line to turn the wipe on.
+    impermanence.wipeRootOnBoot = false;
+
     # adguard.allowedSubnets = [ "192.168.1.0/24" ]; # tighten to your LAN
     # immich.sopsFile = ../../../secrets/metyr.yaml;
     # pgadmin.sopsFile = ../../../secrets/metyr.yaml;

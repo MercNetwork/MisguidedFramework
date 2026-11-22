@@ -12,8 +12,9 @@
       swapSize = "16G";
       # Travels, so it keeps the LUKS passphrase at boot (no tpmUnlock).
     };
-    # Set false for the first boot after migrating (see the migration guide).
-    impermanence.wipeRootOnBoot = true;
+    # MIGRATION: dry run — /persist bind mounts on, nothing wiped. Copy state
+    # first (guide, Phase B), then delete this line to turn the wipe on.
+    impermanence.wipeRootOnBoot = false;
   };
 
   den.aspects.Romina = {

@@ -1,7 +1,7 @@
 # `nix flake check` — cheap evaluation checks that the den wiring does what
 # the framework expects (adapted from the den example template's tests.nix).
 # Each check is a tiny derivation that only builds if its condition holds.
-{ inputs, ... }:
+{ config, inputs, ... }:
 {
   perSystem =
     { pkgs, lib, ... }:
@@ -22,7 +22,10 @@
         malenia-keeps-microvm-subvolume = !(lib.elem "/var/lib/microvms" (persisted "Malenia"));
 
         # root wipe + disk settings
-        romina-wipes-root = (cfg "Romina").boot.initrd.systemd.services ? misguided-wipe-root;
+        # the wipe unit exists exactly when the host's setting asks for it
+        romina-wipe-follows-setting =
+          ((cfg "Romina").boot.initrd.systemd.services ? misguided-wipe-root)
+          == config.den.hosts.x86_64-linux.Romina.settings.misguided.impermanence.wipeRootOnBoot;
         romina-is-encrypted = (cfg "Romina").boot.initrd.luks.devices ? cryptroot;
         romina-asks-passphrase = !(lib.elem "tpm2-device=auto" (cfg "Romina").boot.initrd.luks.devices.cryptroot.crypttabExtraOpts);
         midra-unlocks-with-tpm = lib.elem "tpm2-device=auto" (cfg "Midra").boot.initrd.luks.devices.cryptroot.crypttabExtraOpts;
