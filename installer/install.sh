@@ -5,7 +5,7 @@ set -euo pipefail
 #
 #   sudo misguided-install <host> [flake]
 #
-#   <host>   a nixosConfigurations name from flake.nix (Romina, Midra, Metyr)
+#   <host>   a nixosConfigurations name (Romina, Midra, Metyr — see modules/den.nix)
 #   [flake]  path or URI of the Misguided Framework flake (default: current directory)
 #
 # Run it from the NixOS live ISO, inside a clone of the repo:
@@ -20,7 +20,7 @@ FLAKE="${2:-.}"
 if [ -z "${HOST}" ]; then
   echo "Usage: misguided-install <host> [flake]"
   echo ""
-  echo "Hosts with a disko.nix: Romina, Midra, Metyr"
+  echo "Hosts using misguided.disk: Romina, Midra, Metyr"
   echo "(Malenia: mcli deploy Malenia root@<ip>   Rellana: see README)"
   echo ""
   echo "Example (from inside the repo on the live ISO):"
@@ -39,8 +39,9 @@ echo " Target host: ${HOST}"
 echo " Flake:       ${FLAKE}"
 echo "=================================================="
 echo ""
-echo "WARNING: This repartitions and FORMATS the disk declared in"
-echo "hosts/${HOST}/disko.nix. Everything on that disk will be erased."
+echo "WARNING: This repartitions and FORMATS the disk set in"
+echo "modules/hosts/${HOST}/default.nix (settings.misguided.disk.device)."
+echo "Everything on that disk will be erased."
 echo ""
 read -r -p "Type the host name (${HOST}) to continue: " confirm
 if [ "${confirm}" != "${HOST}" ]; then
@@ -49,11 +50,11 @@ if [ "${confirm}" != "${HOST}" ]; then
 fi
 
 # 1. Partition and format
-echo "--> [1/5] Running Disko for ${HOST}..."
+echo "--> [1/6] Running Disko for ${HOST}..."
 disko --mode destroy,format,mount --flake "${FLAKE}#${HOST}"
 
 # 2. Host identity (SSH host key + SOPS age identity)
-echo "--> [2/5] Creating host keys..."
+echo "--> [2/6] Creating host keys..."
 mkdir -p /mnt/persist/etc/ssh /mnt/persist/etc/sops
 
 if [ ! -f /mnt/persist/etc/ssh/ssh_host_ed25519_key ]; then
@@ -78,12 +79,22 @@ ssh-to-age </mnt/persist/etc/ssh/ssh_host_ed25519_key.pub
 echo "--------------------------------------------------"
 
 # 3. Install
-echo "--> [3/5] Installing NixOS (this takes a while)..."
+echo "--> [3/6] Installing NixOS (this takes a while)..."
 nixos-install --flake "${FLAKE}#${HOST}" --no-root-passwd
 
-# 4. Put the repo where mcli expects it (~/MisguidedFramework)
-echo "--> [4/5] Copying the repo into the new home directory..."
-USER_NAME="$(nix --extra-experimental-features "nix-command flakes" eval --raw "${FLAKE}#nixosConfigurations.${HOST}.config.misguided.user.name" 2>/dev/null || echo mercury)"
+# 4. Impermanence: / (the @ subvolume) is wiped on the first boot, so keep
+#    the state nixos-install already created (uid/gid map, machine id).
+echo "--> [4/6] Seeding /persist with state created during install..."
+for p in etc/machine-id var/lib/nixos var/lib/systemd; do
+  if [ -e "/mnt/${p}" ] && [ ! -e "/mnt/persist/${p}" ]; then
+    mkdir -p "/mnt/persist/$(dirname "${p}")"
+    cp -a "/mnt/${p}" "/mnt/persist/${p}"
+  fi
+done
+
+# 5. Put the repo where mcli expects it (~/MisguidedFramework)
+echo "--> [5/6] Copying the repo into the new home directory..."
+USER_NAME="${MISGUIDED_USER:-mercury}" # the den user in modules/den.nix
 TARGET="/mnt/home/${USER_NAME}/MisguidedFramework"
 if [ -d "${FLAKE}" ] && [ ! -e "${TARGET}" ]; then
   mkdir -p "$(dirname "${TARGET}")"
@@ -96,8 +107,8 @@ else
   echo "    After first boot: git clone https://github.com/MercNetwork/MisguidedFramework ~/MisguidedFramework"
 fi
 
-echo "--> [5/5] Done."
+echo "--> [6/6] Done."
 echo "=================================================="
 echo " Reboot, log in as ${USER_NAME} (default password: chloe),"
-echo " then set your own hash in hosts/common/user.nix."
+echo " then set your own hash in modules/aspects/mercury.nix."
 echo "=================================================="

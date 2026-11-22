@@ -97,7 +97,7 @@ case "${cmd}" in
       echo "usage: mcli deploy <host> <user@ip>" >&2
       exit 1
     }
-    echo "This ERASES the target disk declared in hosts/$1/disko.nix on $2."
+    echo "This ERASES the disk set in modules/hosts/$1/default.nix (settings.misguided.disk.device) on $2."
     read -r -p "Type the host name ($1) to continue: " confirm
     [ "${confirm}" = "$1" ] || exit 0
     run nix run github:nix-community/nixos-anywhere -- --flake "${FLAKE}#$1" "$2"

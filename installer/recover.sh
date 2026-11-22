@@ -75,4 +75,6 @@ fi
 echo "=================================================="
 echo "--> Misguided Framework system mounted at /mnt."
 echo "Run 'nixos-enter' to access your system environment."
+echo "Impermanent hosts: / is fresh every boot. Files from earlier boots are in"
+echo "the old_roots/<timestamp> subvolumes:  mount -o subvol=/ ${ROOT_DEV} /mnt2"
 echo "=================================================="

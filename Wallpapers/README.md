@@ -1,6 +1,6 @@
 # Wallpapers
 
-Drop images here. On the GNOME desktops (Romina, Midra) this folder is linked to
+Drop images here. On the COSMIC desktops (Romina, Midra) this folder is linked to
 `~/Pictures/Wallpapers` (see `modules/home/desktop.nix`); pick one in
 Settings → Appearance → Background → Add Picture.
 
