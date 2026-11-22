@@ -42,6 +42,9 @@ mcli — Misguided Framework helper   (flake: ${FLAKE}, host: ${HOST})
   hosts             list machines defined in the flake
   deploy <host> <user@ip>   first install onto a remote machine (nixos-anywhere + Disko)
   push <host> <user@ip>     apply a config to a remote machine over SSH
+  seed [host]       print commands that copy a host's persisted state into /persist
+                    (impermanence migration):  mcli seed | sudo bash
+                    remote:  mcli seed Malenia | ssh mercury@Malenia sudo bash
   edit              open the repo in \$EDITOR
 
 Environment: MISGUIDED_FLAKE (repo path), MISGUIDED_HOST (override hostname)
@@ -108,6 +111,18 @@ case "${cmd}" in
       exit 1
     }
     run nixos-rebuild switch --flake "${FLAKE}#$1" --target-host "$2" --sudo --ask-sudo-password
+    ;;
+  seed)
+    # Prints shell commands on stdout (so it can be piped into `sudo bash`);
+    # nothing is copied by mcli itself. Run it right before `mcli boot`.
+    h="${1:-${HOST}}"
+    q="${FLAKE}#nixosConfigurations.${h}.config.environment.persistence.\"/persist\""
+    echo "# copy commands for ${h} (pipe into: sudo bash)" >&2
+    # ${…} inside the single quotes is Nix interpolation, not shell:
+    # shellcheck disable=SC2016
+    nix eval --raw "${q}.directories" --apply 'ds: builtins.concatStringsSep "" (map (d: "[ -d ${d.directory} ] && mkdir -p /persist${d.directory} && cp -a ${d.directory}/. /persist${d.directory}/\n") ds)'
+    # shellcheck disable=SC2016
+    nix eval --raw "${q}.files" --apply 'fs: builtins.concatStringsSep "" (map (f: "[ -e ${f.file} ] && [ ! -e /persist${f.file} ] && mkdir -p /persist${dirOf f.file} && cp -a ${f.file} /persist${f.file}\n") fs)'
     ;;
   edit) cd "${FLAKE}" && exec "${EDITOR:-zeditor}" . ;;
   help | -h | --help) usage ;;

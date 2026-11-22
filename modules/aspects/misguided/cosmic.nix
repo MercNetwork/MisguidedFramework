@@ -27,11 +27,6 @@
           # cosmic-monitor           # System Monitor
           # cosmic-wallpapers        # stock wallpapers
         ];
-
-        environment.systemPackages = with pkgs; [
-          cosmic-ext-tweaks # extra settings COSMIC Settings doesn't expose (themes, panel)
-          gnome-disk-utility # Disks: partitions, SMART, and ISO -> USB (⋮ → Restore Disk Image)
-        ];
       };
   };
 }

@@ -1,7 +1,7 @@
 # Misguided Framework
 
-mercury's NixOS / nix-darwin homelab flake, built on [den](https://den.denful.dev)
-(from den's `templates/example`). Every file under `modules/` is a module
+mercury's NixOS / nix-darwin homelab flake, built on [den](https://den.denful.dev).
+Every file under `modules/` is a module
 (loaded by import-tree); `flake.nix` is generated from them by flake-file.
 
 | Host | Was | Hardware | Role |
@@ -23,8 +23,8 @@ Login on every NixOS host: `mercury` / `chloe`. Change the hash in
 mcli switch               # apply changes on this machine
 mcli update               # update pinned inputs
 nix run .#write-flake     # after adding/changing any flake-file.inputs
-nix flake check           # evaluate every machine + modules/tests.nix
-nix run .#Romina -- switch   # same as mcli switch, via nh (one app per host)
+nix flake check           # evaluate every machine
+mcli seed | sudo bash     # impermanence migration: copy this host's state into /persist
 ```
 
 ## Layout
@@ -36,9 +36,8 @@ modules/
   inputs.nix                    core inputs (others sit next to the aspect that uses them)
   namespace.nix                 the `misguided` aspect namespace
   settings.nix                  typed per-host settings (host.settings.misguided.*)
-  dendritic.nix nh.nix          from the den template
+  dendritic.nix                 dendritic flake-parts + flake-file
   tools.nix                     mcli, misguided-install, misguided-recover, devShell, formatter
-  tests.nix                     nix flake check
   aspects/
     defaults.nix                den.default: state versions, hostname, define-user, HM settings
     mercury.nix                 the user (was hosts/common/user.nix + home.nix)
@@ -52,7 +51,7 @@ modules/
       home/                     shell cli git langs zed flutter devtools
       darwin/                   misguided.darwin (+ .defaults .homebrew .tailscale .screen-sharing)
   hosts/<Host>/                 default.nix (host settings + den.aspects.<Host>) + _hardware files
-installer/                      mcli.sh, install.sh, recover.sh (unchanged tools)
+installer/                      mcli.sh, install.sh, recover.sh
 Wallpapers/                     -> ~/Pictures/Wallpapers on the desktops
 ```
 

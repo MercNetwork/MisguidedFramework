@@ -1,5 +1,5 @@
 # What EVERY host, user and home gets, NixOS or macOS. Keep it to static
-# values and den batteries (see the template's warning about putting
+# values and den batteries (den's docs warn against putting
 # parametric functions in den.default).
 { den, ... }:
 {

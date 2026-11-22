@@ -20,7 +20,6 @@
       "/var/lib/AccountsService" # user picture and session choice
       "/var/lib/colord"
       "/var/lib/upower"
-      "/var/lib/boltd" # authorised Thunderbolt devices
     ];
 
     nixos =
@@ -35,8 +34,6 @@
           alsa.enable = true;
           alsa.support32Bit = true;
           pulse.enable = true;
-          # JACK apps: run them through `pw-jack` (services.pipewire.jack.enable
-          # is deprecated — it leaks LD_LIBRARY_PATH into everything).
         };
 
         # System font stack. NixOS ships almost no fonts by default, so GTK apps
@@ -76,7 +73,6 @@
 
         environment.systemPackages = [
           pkgs.unrar
-          pkgs.pipewire.jack # pw-jack
           pkgs.discord
           pkgs.fragments # torrents — Preferences → connect to Metyr's Transmission (port 9091)
           inputs.sidra.packages.${pkgs.stdenv.hostPlatform.system}.default # Apple Music

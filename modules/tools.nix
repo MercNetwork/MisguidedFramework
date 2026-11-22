@@ -6,8 +6,6 @@
 #   misguided-recover    mount an installed system at /mnt for repair         Linux
 #
 #   nix run .#install -- Romina      nix run .#recover      nix run .   (= mcli)
-#
-# nh.nix adds one more package per host: `nix run .#Romina -- switch`.
 { inputs, lib, ... }:
 {
   systems = [
