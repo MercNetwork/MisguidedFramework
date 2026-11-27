@@ -18,6 +18,7 @@
       misguided.disk
       misguided.impermanence
       misguided.gaming
+      # misguided.niri # optional niri session next to COSMIC (pick it at login)
       misguided.ssh # key-only SSH, so Romina can `mcli push Midra mercury@midra`
     ];
 

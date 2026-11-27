@@ -1,0 +1,5 @@
+// COSMIC's cursor (Pop, from pop-icon-theme), so both sessions look the same.
+cursor {
+    xcursor-theme "Pop"
+    xcursor-size 24
+}

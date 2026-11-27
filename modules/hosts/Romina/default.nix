@@ -23,6 +23,7 @@
       misguided.disk
       misguided.impermanence
       misguided.podman # local containers for dev work (also gives `docker`)
+      # misguided.niri # optional niri session next to COSMIC (pick it at login)
 
       # mercury's extras on this machine (reach his home via host-aspects)
       misguided.zed

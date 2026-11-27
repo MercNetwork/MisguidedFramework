@@ -45,6 +45,7 @@ modules/
       base desktop server       roles (was hosts/common/*)
       disk impermanence         the shared Btrfs layout + root wipe + persistence collector
       cosmic gaming tailscale
+      niri/                     opt-in niri session next to COSMIC (niri.nix + its configs)
       server/                   ssh sops adguard caddy cloudflared syncthing transmission wireguard
       oci/                      immich jellyfin pgadmin
       virtualisation/           podman docker oci compose2nix microvm-host
@@ -113,6 +114,20 @@ Every machine is on Tailscale (`sudo tailscale up` once per machine).
 
 COSMIC has no built-in remote desktop server yet, so there's no RDP into
 Romina or Midra for now.
+
+## niri (optional second session)
+
+`misguided.niri` adds [niri](https://github.com/YaLTeR/niri) as a second session on
+a desktop host; COSMIC stays the default. Add it to the host's `includes` (the line
+is already there, commented out, on Romina and Midra), rebuild, log out, and pick
+**Niri** on the login screen.
+
+It's the [endeavouros-niri](https://gitlab.com/trungdaohieutrung/endeavouros-niri)
+setup (waybar, fuzzel, its keybinds and look) running on COSMIC's pieces: COSMIC's
+lock screen, idle/screen-off, wallpaper, notifications and polkit prompts, and
+COSMIC Terminal / Files / Text Editor / System Monitor / Settings as the apps.
+Settings you change in COSMIC (wallpaper, theme, Power timings) apply to both
+sessions. Keybinds: `Mod+Shift+/` in niri, or `modules/aspects/misguided/niri/conf/binds.kdl`.
 
 ## Impermanence notes
 

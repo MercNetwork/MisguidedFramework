@@ -1,0 +1,10 @@
+// COSMIC's own session pieces, so niri follows what's set in COSMIC Settings.
+// The lock screen (cosmic-greeter) isn't here: it has to be started by the
+// login session itself, which niri.nix's session script does.
+spawn-at-startup "cosmic-bg"            // wallpaper — COSMIC Settings → Wallpaper
+spawn-at-startup "cosmic-notifications" // notification pop-ups
+spawn-at-startup "cosmic-osd"           // polkit password prompts, volume pop-up
+spawn-at-startup "cosmic-idle"          // screen off → lock → suspend — COSMIC Settings → Power
+
+spawn-at-startup "waybar"
+spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
